@@ -1,54 +1,146 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Garage Wende Panga Express</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Accueil</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">À propos</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <span>
-            <p>Que voulez-vous faire ?</p>
-            <div class="options">
-                <div>Réparation définitive du Filtre à Particules</div>
-                <div>Vanne EGR</div>
-                <div>AdBlue de votre véhicule</div>
-                <div>Corriger des messages d'erreurs</div>
-                <div>Réparer un mode dégradé</div>
-                <div>Réparer une perte de puissance</div>
-                <div>Corriger une interdiction de démarrer</div>
-                <div>Désactivation volets de tubulures d'admission (flap)</div>
-                <div>Désactivation du système AdBlue</div>
-                <div>Désactivation du système Start-Stop</div>
-                <div>Désactivation des sondes Lambda/O2</div>
-                <div>Suppression définitive de codes défauts</div>
-                <div>Problème de démarrage à chaud</div>
-                <div>Synchronisation des calculateurs moteur</div>
+    <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <ul>
+                    <li><a href="#" onclick="showSection('accueil')">Accueil</a></li>
+                    <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <span class="background-video">
+                <div class="overlay"></div>
+                <video autoplay muted loop id="myVideo">
+                    <source src="images/garage.mp4" type="video/mp4">
+                </video>
+            </span>
+
+            <!-- ACCUEIL -->
+            <section id="accueil" class="services">
+            <h1>Nos Services</h1>
+            <div class="carousel-centered">
+            <div class="card image-card" onclick="showSection('reparations')">
+                <img src="images/reparations.png" alt="Réparations" />
+                <h3>Réparations</h3>
             </div>
-        </span>
+            <div class="card image-card" onclick="showSection('electronique')">
+                <img src="images/electronique.png" alt="Électronique" />
+                <h3>Électronique</h3>
+            </div>
+            <div class="card image-card" onclick="showSection('moteur')">
+                <img src="images/moteur.png" alt="Moteur" />
+                <h3>Système Moteur</h3>
+            </div>
+            <div class="card image-card" onclick="showSection('defauts')">
+                <img src="images/defauts.jpg" alt="Codes défauts" />
+                <h3>Codes & Défauts</h3>
+            </div>
+            <div class="card image-card" onclick="showSection('rendezvous')">
+                <img src="images/rendezvous.png" alt="Prendre RDV" />
+                <h3>Prendre RDV</h3>
+            </div>
+            </div>
+        </section>
+
+        <!-- RÉPARATIONS -->
+        <section id="reparations" class="services section-hidden">
+            <h2>Réparations</h2>
+            <button onclick="showSection('accueil')">← Retour</button>
+            <ul class="liste-services"> <span class="tel"> <img src="images/telephone.png" alt=""> </span>
+            <li>Filtre à Particules (FAP)</li>
+            <li>Vanne EGR</li>
+            <li>Mode dégradé</li>
+            <li>Perte de puissance</li>
+            <li>Interdiction de démarrer</li>
+            </ul>
+        </section>
+
+        <!-- ÉLECTRONIQUE -->
+        <section id="electronique" class="services section-hidden">
+            <h2>Électronique</h2>
+            <button onclick="showSection('accueil')">← Retour</button>
+            <ul class="liste-services">
+            <li>Messages d'erreurs</li>
+            <li>Désactivation Start-Stop</li>
+            <li>Désactivation volets admission</li>
+            <li>Sondes Lambda / O2</li>
+            </ul>
+        </section>
+
+        <!-- MOTEUR -->
+        <section id="moteur" class="services section-hidden">
+            <h2>Système Moteur</h2>
+            <button onclick="showSection('accueil')">← Retour</button>
+            <ul class="liste-services">
+            <li>AdBlue</li>
+            <li>Problème de démarrage à chaud</li>
+            <li>Synchronisation calculateurs moteur</li>
+            </ul>
+        </section>
+
+        <!-- DÉFAUTS -->
+        <section id="defauts" class="services section-hidden">
+            <h2>Codes & Défauts</h2>
+            <button onclick="showSection('accueil')">← Retour</button>
+            <ul class="liste-services">
+            <li>Suppression de codes défauts</li>
+            <li>Effacement des erreurs permanentes</li>
+            </ul>
+        </section>
+
+        <!-- RENDEZ-VOUS -->
+        <section id="rendezvous" class="services section-hidden">
+            <h2>Prendre Rendez-vous</h2>
+            <button onclick="showSection('accueil')">← Retour</button>
+
+            <form class="formulaire-rdv" onsubmit="envoyerRDV(event)">
+            <input type="text" name="nom" placeholder="Votre nom" required />
+            <input type="tel" name="telephone" placeholder="Votre téléphone" required />
+            <input type="date" name="date" required />
+            <input type="time" name="heure" required />
+            <select name="service" required>
+                <option value="">-- Choisissez un service --</option>
+                <option>Réparations</option>
+                <option>Électronique</option>
+                <option>Système moteur</option>
+                <option>Codes & défauts</option>
+            </select>
+            <textarea name="message" placeholder="Message ou demande spécifique"></textarea>
+            <button type="submit">Envoyer</button>
+            </form>
+
+            <p id="confirmation" style="margin-top:20px; color:lightgreen; display:none;">
+            ✅ Rendez-vous envoyé !
+            </p>
+        </section>
     </main>
-    <footer>
-        <div>
-            <p><strong>Garage Wende Panga Express</strong></p>
-            <p>Adresse : 123 rue de l'Exemple, 75000 Paris</p>
+    <!-- CONTACT -->
+    <footer id="contact" class="services section-hidden">
+        <h2>Contact</h2>
+        <button onclick="showSection('accueil')">← Retour</button>
+        <div class="footer-container">
+        <div class="footer-col">
+            <strong>Garage Wende Panga Express</strong><br />
+            123 rue de l'Exemple, 75000 Paris
         </div>
-        <div>
-            <p class="appel">📞 Appelez-nous au : 06 XX XX XX XX</p>
+        <div class="footer-col">
+            📞 06 XX XX XX XX<br />
+            ✉️ contact@garagewpe.fr
         </div>
-        <div>
-            <p>Site codé par alfus & tchapson</p>
+        <div class="footer-col">
+            Site codé par <strong>alfus & tchapson</strong>
+        </div>
         </div>
     </footer>
-</body>
+
+    <script src="script.js"></script>
+    </body>
 </html>
