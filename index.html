@@ -1,146 +1,198 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Garage Wende Panga Express</title>
-    <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <header>
-            <nav>
-                <ul>
-                    <li><a href="#" onclick="showSection('accueil')">Accueil</a></li>
-                    <li><a href="#" onclick="showSection('contact')">Contact</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <span class="background-video">
-                <div class="overlay"></div>
-                <video autoplay muted loop id="myVideo">
-                    <source src="images/garage.mp4" type="video/mp4">
-                </video>
-            </span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Garage Wende Panga Express</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#" onclick="showSection('accueil')">Accueil</a></li>
+        <li><a href="#" onclick="showSection('contact')">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
 
-            <!-- ACCUEIL -->
-            <section id="accueil" class="services">
-            <h1>Nos Services</h1>
-            <div class="carousel-centered">
-            <div class="card image-card" onclick="showSection('reparations')">
-                <img src="images/reparations.png" alt="Réparations" />
-                <h3>Réparations</h3>
-            </div>
-            <div class="card image-card" onclick="showSection('electronique')">
-                <img src="images/electronique.png" alt="Électronique" />
-                <h3>Électronique</h3>
-            </div>
-            <div class="card image-card" onclick="showSection('moteur')">
-                <img src="images/moteur.png" alt="Moteur" />
-                <h3>Système Moteur</h3>
-            </div>
-            <div class="card image-card" onclick="showSection('defauts')">
-                <img src="images/defauts.jpg" alt="Codes défauts" />
-                <h3>Codes & Défauts</h3>
-            </div>
-            <div class="card image-card" onclick="showSection('rendezvous')">
-                <img src="images/rendezvous.png" alt="Prendre RDV" />
-                <h3>Prendre RDV</h3>
-            </div>
-            </div>
-        </section>
+  <main>
+    <span class="background-video">
+      <div class="overlay"></div>
+      <video autoplay muted loop id="myVideo">
+        <source src="images/garage.mp4" type="video/mp4">
+      </video>
+    </span>
 
-        <!-- RÉPARATIONS -->
-        <section id="reparations" class="services section-hidden">
-            <h2>Réparations</h2>
-            <button onclick="showSection('accueil')">← Retour</button>
-            <ul class="liste-services"> <span class="tel"> <img src="images/telephone.png" alt=""> </span>
-            <li>Filtre à Particules (FAP)</li>
-            <li>Vanne EGR</li>
-            <li>Mode dégradé</li>
-            <li>Perte de puissance</li>
-            <li>Interdiction de démarrer</li>
-            </ul>
-        </section>
+    <!-- ACCUEIL -->
+    <section id="accueil" class="services">
+      <h1>Nos Services</h1>
+      <div class="carousel-centered">
+        <div class="card image-card" onclick="showSection('reparations')">
+          <img src="images/reparations.png" alt="Réparations" />
+          <h3>Réparations</h3>
+        </div>
+        <div class="card image-card" onclick="showSection('electronique')">
+          <img src="images/electronique.png" alt="Électronique" />
+          <h3>Électronique</h3>
+        </div>
+        <div class="card image-card" onclick="showSection('moteur')">
+          <img src="images/moteur.png" alt="Moteur" />
+          <h3>Système Moteur</h3>
+        </div>
+        <div class="card image-card" onclick="showSection('defauts')">
+          <img src="images/defauts.jpg" alt="Codes défauts" />
+          <h3>Codes & Défauts</h3>
+        </div>
+        <div class="card image-card" onclick="showSection('rendezvous')">
+          <img src="images/rendezvous.png" alt="Prendre RDV" />
+          <h3>Prendre RDV</h3>
+        </div>
+      </div>
+    </section>
 
-        <!-- ÉLECTRONIQUE -->
-        <section id="electronique" class="services section-hidden">
-            <h2>Électronique</h2>
-            <button onclick="showSection('accueil')">← Retour</button>
-            <ul class="liste-services">
-            <li>Messages d'erreurs</li>
-            <li>Désactivation Start-Stop</li>
-            <li>Désactivation volets admission</li>
-            <li>Sondes Lambda / O2</li>
-            </ul>
-        </section>
+    <!-- REPARATIONS -->
+    <section id="reparations" class="services section-hidden">
+      <h2>Réparations</h2>
+      <button onclick="showSection('accueil')">← Retour</button>
+      <ul class="liste-services">
+        <li onclick="showRDV('fap')">Filtre à Particules (FAP)</li>
+        <li onclick="showRDV('egr')">Vanne EGR</li>
+        <li onclick="showRDV('modeDegrade')">Mode dégradé</li>
+        <li onclick="showRDV('interdiction')">Interdiction de démarrer</li>
+        <li onclick="showRDV('puissance')">Perte de puissance</li>
+      </ul>
+    </section>
 
-        <!-- MOTEUR -->
-        <section id="moteur" class="services section-hidden">
-            <h2>Système Moteur</h2>
-            <button onclick="showSection('accueil')">← Retour</button>
-            <ul class="liste-services">
-            <li>AdBlue</li>
-            <li>Problème de démarrage à chaud</li>
-            <li>Synchronisation calculateurs moteur</li>
-            </ul>
-        </section>
+    <!-- ELECTRONIQUE -->
+    <section id="electronique" class="services section-hidden">
+      <h2>Électronique</h2>
+      <button onclick="showSection('accueil')">← Retour</button>
+      <ul class="liste-services">
+        <li onclick="showRDV('startStop')">Désactivation Start-Stop</li>
+        <li onclick="showRDV('lambda')">Sondes Lambda / O2</li>
+        <li onclick="showRDV('volets')">Désactivation volets admission</li>
+        <li onclick="showRDV('erreurs')">Messages d'erreurs</li>
+      </ul>
+    </section>
 
-        <!-- DÉFAUTS -->
-        <section id="defauts" class="services section-hidden">
-            <h2>Codes & Défauts</h2>
-            <button onclick="showSection('accueil')">← Retour</button>
-            <ul class="liste-services">
-            <li>Suppression de codes défauts</li>
-            <li>Effacement des erreurs permanentes</li>
-            </ul>
-        </section>
+    <!-- MOTEUR -->
+    <section id="moteur" class="services section-hidden">
+      <h2>Système Moteur</h2>
+      <button onclick="showSection('accueil')">← Retour</button>
+      <ul class="liste-services">
+        <li onclick="showRDV('adblue')">AdBlue</li>
+        <li onclick="showRDV('demarrageChaud')">Problème de démarrage à chaud</li>
+        <li onclick="showRDV('synchro')">Synchronisation calculateurs moteur</li>
+      </ul>
+    </section>
 
-        <!-- RENDEZ-VOUS -->
-        <section id="rendezvous" class="services section-hidden">
-            <h2>Prendre Rendez-vous</h2>
-            <button onclick="showSection('accueil')">← Retour</button>
+    <!-- DÉFAUTS -->
+    <section id="defauts" class="services section-hidden">
+      <h2>Codes & Défauts</h2>
+      <button onclick="showSection('accueil')">← Retour</button>
+      <ul class="liste-services">
+        <li onclick="showRDV('defauts')">Suppression de codes défauts</li>
+        <li onclick="showRDV('defauts')">Effacement des erreurs permanentes</li>
+      </ul>
+    </section>
 
-            <form class="formulaire-rdv" onsubmit="envoyerRDV(event)">
-            <input type="text" name="nom" placeholder="Votre nom" required />
-            <input type="tel" name="telephone" placeholder="Votre téléphone" required />
-            <input type="date" name="date" required />
-            <input type="time" name="heure" required />
-            <select name="service" required>
-                <option value="">-- Choisissez un service --</option>
-                <option>Réparations</option>
-                <option>Électronique</option>
-                <option>Système moteur</option>
-                <option>Codes & défauts</option>
-            </select>
-            <textarea name="message" placeholder="Message ou demande spécifique"></textarea>
-            <button type="submit">Envoyer</button>
-            </form>
+    <!-- RENDEZ-VOUS -->
+    <section id="rendezvous" class="services section-hidden">
+      <h2 id="rdv-main-title" >Prendre Rendez-vous</h2>
+      <button onclick="showPreviousSection()">← Retour</button>
+  
+      <div id="rdv-intro" class="rdv-box" style="align-items: center;">
+          <h3 id="rdv-titre" style="display:none;"></h3> <p id="description-service"></p>
+          <ul id="symptomes-service">
+              </ul>
+          <button onclick="document.getElementById('rdv-intro').style.display = 'none'; document.getElementById('formulaire-rdv').style.display = 'flex';">Continuer et prendre rendez-vous</button>
+      </div>
+  
+      <form id="formulaire-rdv" class="formulaire-rdv" onsubmit="envoyerRDV(event)">
+          <p>Merci de remplir les détails ci-dessous pour votre demande.</p>
 
-            <p id="confirmation" style="margin-top:20px; color:lightgreen; display:none;">
-            ✅ Rendez-vous envoyé !
-            </p>
-        </section>
-    </main>
+          <label for="name">Votre nom:</label>
+          <input type="text" id="name" name="name" required>
+  
+          <label for="phone">Votre téléphone:</label>
+          <input type="tel" id="phone" name="phone" required>
+  
+          <label for="date">Date souhaitée:</label>
+          <input type="date" id="date" name="date" required>
+  
+          <label for="select-service">Service concerné:</label>
+          <select id="select-service" name="service" required>
+              <option value="">-- Choisir un service --</option>
+              <option value="Réparations">Réparations</option>
+              <option value="Électronique">Électronique</option>
+              <option value="Système moteur">Système moteur</option>
+              <option value="Codes & Défauts">Codes & Défauts</option>
+              </select>
+  
+          <label for="message">Message ou demande spécifique:</label>
+          <textarea name="message" id="message"></textarea>
+  
+          <button type="submit">Envoyer ma demande de RDV</button>
+          <button type="button" onclick="document.getElementById('rdv-intro').style.display = 'block'; document.getElementById('formulaire-rdv').style.display = 'none';">Précédent (Détails du service)</button>
+          <button type="button" onclick="showSection('accueil')">Annuler et Retour à l'accueil</button>
+      </form>
+  </section>
+
+    <!-- Étape 2 : Formulaire -->
+      <form id="formulaire-rdv" class="formulaire-rdv" onsubmit="envoyerRDV(event)" style="display:none;">
+        <input type="text" name="nom" placeholder="Votre nom" required />
+        <input type="tel" name="telephone" placeholder="Votre téléphone" required />
+        <input type="date" name="date" required />
+        <input type="time" name="heure" required />
+        <select name="service" id="select-service" required>
+            <option value="">-- Choisissez un service --</option>
+            <option>Réparations - Filtre à Particules</option>
+            <option>Réparations - Vanne EGR</option>
+            <option>Réparations - Mode dégradé</option>
+            <option>Réparations - Interdiction de démarrer</option>
+            <option>Réparations - Perte de puissance</option>
+            <option>Électronique - Désactivation Start-Stop</option>
+            <option>Électronique - Sondes Lambda / O2</option>
+            <option>Électronique - Désactivation volets admission</option>
+            <option>Électronique - Messages d'erreurs</option>
+            <option>Système Moteur - AdBlue</option>
+            <option>Système Moteur - Problème de démarrage à chaud</option>
+            <option>Système Moteur - Synchronisation calculateurs</option>
+            <option>Codes & Défauts - Lecture/effacement erreurs</option>
+        </select>
+        <textarea name="message" placeholder="Message ou demande spécifique"></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+
+      <p id="confirmation" style="margin-top:20px; color:lightgreen; display:none;">
+        ✅ Rendez-vous envoyé !
+      </p>
+
+      
+      
+    </section>
+
     <!-- CONTACT -->
     <footer id="contact" class="services section-hidden">
-        <h2>Contact</h2>
-        <button onclick="showSection('accueil')">← Retour</button>
-        <div class="footer-container">
+      <h2>Contact</h2>
+      <button onclick="showSection('accueil')">← Retour</button>
+      <div class="footer-container">
         <div class="footer-col">
-            <strong>Garage Wende Panga Express</strong><br />
-            123 rue de l'Exemple, 75000 Paris
-        </div>
-        <div class="footer-col">
-            📞 06 XX XX XX XX<br />
-            ✉️ contact@garagewpe.fr
+          <strong>Garage Wende Panga Express</strong><br />
+          123 rue de l'Exemple, 75000 Paris
         </div>
         <div class="footer-col">
-            Site codé par <strong>alfus & tchapson</strong>
+          📞 06 XX XX XX XX<br />
+          ✉️ contact@garagewpe.fr
         </div>
+        <div class="footer-col">
+          Site codé par <strong>alfus & tchapson</strong>
         </div>
+      </div>
     </footer>
+  </main>
 
-    <script src="script.js"></script>
-    </body>
+  <script src="script.js"></script>
+</body>
 </html>
