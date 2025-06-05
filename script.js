@@ -1,3 +1,48 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBo4JVuZi5AtC1wY1TXx4Az8ckQv5QrBPI",
+  authDomain: "wende-panga-express.firebaseapp.com",
+  projectId: "wende-panga-express",
+  storageBucket: "wende-panga-express.firebasestorage.app",
+  messagingSenderId: "661266039149",
+  appId: "1:661266039149:web:a6b82733096ed5217a9a64",
+  measurementId: "G-0JKLWTYV81"
+};
+
+// Initialiser Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const database = getDatabase(app); // Initialiser la base de données
+
+
+// Écrire des données
+database.ref('rendezvous/').push({
+  client: "John Doe",
+  tel: "06 00 00 00 00",
+  date: "05-06-2025",
+  heure: "17:30",
+  service: 0,
+  message: `🔧 Service : Vanne EGR
+📋 Description : La vanne EGR réduit les émissions de NOx en recyclant les gaz.
+❗ Symptômes :
+- Ralenti instable
+- Odeur de gaz
+- Moteur bruyant`
+});
+
+
+
+
+//Fonctions site
+
+
 let previousSectionId = 'accueil';
 
 function showSection(id) {
@@ -250,3 +295,20 @@ function afficherFormulaireRDV() {
 function showPreviousSection() {
     showSection(previousSectionId);
 }
+
+//FIREBASE
+
+// Écrire des données
+database.ref('rendezvous/').push({
+  client: "John Doe",
+  tel: "06 00 00 00 00",
+  date: "05-06-2025",
+  heure: "17:30",
+  service: 0,
+  message: `🔧 Service : Vanne EGR
+📋 Description : La vanne EGR réduit les émissions de NOx en recyclant les gaz.
+❗ Symptômes :
+- Ralenti instable
+- Odeur de gaz
+- Moteur bruyant`
+});
