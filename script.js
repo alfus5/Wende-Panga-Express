@@ -292,9 +292,6 @@ function afficherFormulaireRDV() {
 
 
 
-function showPreviousSection() {
-    showSection(previousSectionId);
-}
 
 //FIREBASE
 
