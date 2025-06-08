@@ -50,7 +50,7 @@ push(rendezvousRef, {
 
 // Just a note: In the modular SDK, you generally use the imported functions directly
 // like `push(rendezvousRef, { ... })` instead of `database.ref(...).push(...)`.
-// Both will work, but the direct function call is the more common modular pattern.
+// Both will work, but the direct function call is the more common modular pattern.S
 
 
 
