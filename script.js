@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js"; // <--- Import getAnalytics here!
 import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -13,20 +15,20 @@ const firebaseConfig = {
   storageBucket: "wende-panga-express.firebasestorage.app",
   messagingSenderId: "661266039149",
   appId: "1:661266039149:web:a6b82733096ed5217a9a64",
-  measurementId: "G-0JKLWTYV81"
+  measurementId: "G-0JKLWTYV81" // Great, you have your measurement ID included!
 };
 
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const analytics = getAnalytics(app); // Now getAnalytics should be defined!
 const database = getDatabase(app); // Initialiser la base de données
 
 // Écrire des données en utilisant la syntaxe modulaire
 // 1. Get a reference to the 'rendezvous/' path
 const rendezvousRef = ref(database, 'rendezvous/');
 
-// Écrire des données
-database.ref('rendezvous/').push({
+// You can also use the push function directly like this:
+push(rendezvousRef, {
   client: "John Doe",
   tel: "06 00 00 00 00",
   date: "05-06-2025",
@@ -38,7 +40,18 @@ database.ref('rendezvous/').push({
 - Ralenti instable
 - Odeur de gaz
 - Moteur bruyant`
+})
+.then(() => {
+  console.log("Data saved successfully!");
+})
+.catch((error) => {
+  console.error("Data could not be saved.", error);
 });
+
+// Just a note: In the modular SDK, you generally use the imported functions directly
+// like `push(rendezvousRef, { ... })` instead of `database.ref(...).push(...)`.
+// Both will work, but the direct function call is the more common modular pattern.
+
 
 
 
