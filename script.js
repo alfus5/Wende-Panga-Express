@@ -11,12 +11,14 @@ import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.
 const firebaseConfig = {
   apiKey: "AIzaSyBo4JVuZi5AtC1wY1TXx4Az8ckQv5QrBPI",
   authDomain: "wende-panga-express.firebaseapp.com",
+  databaseURL: "https://wende-panga-express-default-rtdb.europe-west1.firebasedatabase.app", // ← ajoute cette ligne !
   projectId: "wende-panga-express",
   storageBucket: "wende-panga-express.firebasestorage.app",
   messagingSenderId: "661266039149",
   appId: "1:661266039149:web:a6b82733096ed5217a9a64",
-  measurementId: "G-0JKLWTYV81" // Great, you have your measurement ID included!
+  measurementId: "G-0JKLWTYV81"
 };
+
 
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
