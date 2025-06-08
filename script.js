@@ -143,13 +143,12 @@ function sendRDV(event) {
   const newRdvRef = push(rdvRef); // génère un ID unique
   set(newRdvRef, rdvData)
     .then(() => {
-      alert("Rendez-vous envoyé avec succès !");
+      console.log("Rendez-vous envoyé avec succès !");
       // Vider le formulaire
-      document.getElementById('formulaire-rdv').reset();
+      //document.getElementById('formulaire-rdv').reset();
     })
     .catch((error) => {
       console.error("Erreur lors de l'envoi du rendez-vous :", error);
-      alert("Erreur lors de l'envoi du rendez-vous.");
     });
 
   // 🍪 Sauvegarde dans un cookie (sous forme JSON)
@@ -341,3 +340,4 @@ window.showRDV = showRDV;
 window.envoyerRDV = envoyerRDV;
 window.afficherFormulaireRDV = afficherFormulaireRDV;
 window.toggleMenu = toggleMenu;
+window.sendRDV = sendRDV;
