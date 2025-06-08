@@ -50,7 +50,7 @@ push(rendezvousRef, {
 
 // Just a note: In the modular SDK, you generally use the imported functions directly
 // like `push(rendezvousRef, { ... })` instead of `database.ref(...).push(...)`.
-// Both will work, but the direct function call is the more common modular pattern.S
+// Both will work, but the direct function call is the more common modèukular pattern.S
 
 
 
@@ -59,7 +59,8 @@ push(rendezvousRef, {
 
 let sectionHistory = ['accueil'];
 
-function showSection(id, skipHistory = false) {
+function showSection(id) {
+  let skipHistory = false
   const current = document.querySelector('section:not(.section-hidden), footer:not(.section-hidden)');
   if (current && current.id !== id && !skipHistory) {
     sectionHistory.push(current.id);
