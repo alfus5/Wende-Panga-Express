@@ -1,10 +1,6 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
-// NOTE: You are trying to use getAnalytics but it's not imported.
-// If you want to use Analytics, you'll need to import it:
-// import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
-
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,24 +13,20 @@ const firebaseConfig = {
   storageBucket: "wende-panga-express.firebasestorage.app",
   messagingSenderId: "661266039149",
   appId: "1:661266039149:web:a6b82733096ed5217a9a64",
-  measurementId: "G-0JKLWTYV81" // Optional, if you use Analytics
+  measurementId: "G-0JKLWTYV81"
 };
 
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
-
-// NOTE: If you don't import getAnalytics and call it, this line will cause an error.
-// If you don't need Analytics for this part, you can remove these two lines.
-// const analytics = getAnalytics(app);
-
+const analytics = getAnalytics(app);
 const database = getDatabase(app); // Initialiser la base de données
 
 // Écrire des données en utilisant la syntaxe modulaire
 // 1. Get a reference to the 'rendezvous/' path
 const rendezvousRef = ref(database, 'rendezvous/');
 
-// 2. Push the data to this reference. push() automatically creates a unique key.
-push(rendezvousRef, {
+// Écrire des données
+database.ref('rendezvous/').push({
   client: "John Doe",
   tel: "06 00 00 00 00",
   date: "05-06-2025",
@@ -46,16 +38,7 @@ push(rendezvousRef, {
 - Ralenti instable
 - Odeur de gaz
 - Moteur bruyant`
-})
-.then(() => {
-  // Data saved successfully!
-  console.log("Rendezvous data pushed successfully!");
-})
-.catch((error) => {
-  // The write failed...
-  console.error("Error pushing rendezvous data:", error);
 });
-
 
 
 
@@ -63,101 +46,104 @@ push(rendezvousRef, {
 //Fonctions site
 
 
-let previousSectionId = 'accueil';
+let sectionHistory = ['accueil'];
 
-function showSection(id) {
-  const currentlyVisible = document.querySelector('section:not(.section-hidden)');
-  if (currentlyVisible) {
-      previousSectionId = currentlyVisible.id;
+function showSection(id, skipHistory = false) {
+  const current = document.querySelector('section:not(.section-hidden), footer:not(.section-hidden)');
+  if (current && current.id !== id && !skipHistory) {
+    sectionHistory.push(current.id);
   }
 
-  // Masquer toutes les sections et le footer
   document.querySelectorAll('section, footer').forEach(s => s.classList.add('section-hidden'));
 
-  const target = document.getElementById(id);
+  const target = document.getElementById(id) || document.querySelector(`footer#${id}`);
   if (target) {
-      // Réinitialiser les champs et gérer l'affichage de l'intro/formulaire pour la section 'rendezvous'
-      if (id === 'rendezvous') {
-          // Réinitialisation des titres et champs pour un rendez-vous "vierge"
-          document.querySelector('#rdv-titre').textContent = `Prendre Rendez-vous`; // Titre par défaut
-          document.querySelector('select[name="service"]').value = "";
-          document.querySelector('textarea[name="message"]').value = "";
-          document.getElementById('description-service').textContent = "";
-          document.getElementById('symptomes-service').innerHTML = "";
+    if (id === 'rendezvous') {
+      document.querySelector('#rdv-titre').textContent = `Prendre Rendez-vous`;
+      document.querySelector('select[name="service"]').value = "";
+      document.querySelector('textarea[name="message"]').value = "";
+      document.getElementById('description-service').textContent = "";
+      document.getElementById('symptomes-service').innerHTML = "";
+      document.getElementById('rdv-intro').style.display = 'block';
+      document.getElementById('formulaire-rdv').style.display = 'none';
+    }
 
-          window.isServiceRedirect = false; // Important pour indiquer qu'on n'est pas redirigé d'un service
+    target.classList.remove('section-hidden');
 
-          // *** AJOUTEZ CES LIGNES POUR GÉRER L'AFFICHAGE INITIAL DU CONTENU DU RDV ***
-          document.getElementById('rdv-intro').style.display = 'block'; // Affiche l'intro par défaut
-          document.getElementById('formulaire-rdv').style.display = 'none'; // Masque le formulaire par défaut
-          // *************************************************************************
-      }
-
-      target.classList.remove('section-hidden');
-
-      // Appliquer l'effet de carrousel uniquement si on est sur la page d'accueil
-      if (id === 'accueil') {
-          applyCarouselEffect();
-      }
+    if (id === 'accueil') {
+      applyCarouselEffect();
+    }
   }
 }
 
-        function envoyerRDV(event) {
+
+const groupesPrincipaux = ['reparations', 'electronique', 'moteur', 'defauts'];
+
+function showPreviousSection() {
+  const previous = sectionHistory.pop();
+
+  if (previous && document.getElementById(previous)) {
+    showSection(previous, true); // true = ne pas repush dans l’historique
+  } else if (previous && document.querySelector(`footer#${previous}`)) {
+    showSection(previous, true);
+  } else {
+    showSection('accueil', true);
+  }
+}
+
+
+
+
+
+function envoyerRDV(event) {
   event.preventDefault();
   const confirmation = document.getElementById('confirmation');
   confirmation.style.display = 'block';
-
   setTimeout(() => {
     confirmation.style.display = 'none';
     showSection('accueil');
   }, 3000);
 }
 
-        // 🌀 EFFET 3D SUR LES CARTES D’ACCUEIL
-        function applyCarouselEffect() {
-            const carousel = document.querySelector('#accueil .carousel-centered');
-            if (!carousel) return;
+function applyCarouselEffect() {
+  const carousel = document.querySelector('#accueil .carousel-centered');
+  if (!carousel) return;
+  const cards = carousel.querySelectorAll('.card');
 
-            const cards = carousel.querySelectorAll('.card');
+  function updateTransform() {
+    const center = carousel.scrollLeft + carousel.offsetWidth / 2;
+    cards.forEach(card => {
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = (center - cardCenter) / carousel.offsetWidth;
+      const scale = 1 - Math.min(Math.abs(distance) * 0.6, 0.4);
+      const rotate = distance * 25;
+      card.style.transform = `scale(${scale}) rotateY(${rotate}deg)`;
+      card.style.zIndex = `${Math.floor(1000 - Math.abs(distance) * 100)}`;
+    });
+  }
 
-            function updateTransform() {
-                const center = carousel.scrollLeft + carousel.offsetWidth / 2;
-                cards.forEach(card => {
-                    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-                    const distance = (center - cardCenter) / carousel.offsetWidth;
-                    const scale = 1 - Math.min(Math.abs(distance) * 0.6, 0.4);
-                    const rotate = distance * 25;
+  carousel.addEventListener('scroll', updateTransform);
+  updateTransform();
+}
 
-                    card.style.transform = `scale(${scale}) rotateY(${rotate}deg)`;
-                    card.style.zIndex = `${Math.floor(1000 - Math.abs(distance) * 100)}`;
-                });
-            }
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.accordion-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling;
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', !isExpanded);
+      content.style.display = isExpanded ? 'none' : 'block';
+    });
+  });
+});
 
-            carousel.addEventListener('scroll', updateTransform);
-            updateTransform();
-        }
+window.onload = () => {
+  showSection('accueil');
+  applyCarouselEffect();
+};
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Code pour gérer l'interaction de l'accordéon
-            document.querySelectorAll('.accordion-button').forEach(button => {
-                button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                    button.setAttribute('aria-expanded', !isExpanded);
-                    content.style.display = isExpanded ? 'none' : 'block';
-                });
-            });
-        });
-
-        window.onload = () => {
-            showSection('accueil');
-            applyCarouselEffect();
-        };
 function openAccordion(id) {
-  // Affiche la section accordéon
   showSection(id);
-
-  // Attend un petit délai pour que le DOM soit prêt
   setTimeout(() => {
     const button = document.querySelector(`#${id} .accordion-button`);
     const content = document.querySelector(`#${id} .accordion-content`);
@@ -165,36 +151,22 @@ function openAccordion(id) {
       button.setAttribute('aria-expanded', true);
       content.style.display = 'block';
     }
-  }, 100); // 100ms pour laisser le temps au DOM de s’afficher
+  }, 100);
 }
-let lastSectionId = '';
 
 function showDetails(titre) {
-    // Sauvegarde la dernière section visible
-    const currentVisible = document.querySelector('section:not(.section-hidden)');
-    if (currentVisible) {
-        lastSectionId = currentVisible.id;
-    }
-
-    // Masque tout
-    document.querySelectorAll('section, footer').forEach(s => s.classList.add('section-hidden'));
-
-    // Met à jour le titre
-    const titreElement = document.getElementById('accordion-title');
-    if (titreElement) {
-        titreElement.textContent = titre;
-    }
-
-    // Affiche la section de détails
-    document.getElementById('accordion').classList.remove('section-hidden');
+  const currentVisible = document.querySelector('section:not(.section-hidden)');
+  if (currentVisible) sectionHistory.push(currentVisible.id);
+  document.querySelectorAll('section, footer').forEach(s => s.classList.add('section-hidden'));
+  const titreElement = document.getElementById('accordion-title');
+  if (titreElement) titreElement.textContent = titre;
+  document.getElementById('accordion').classList.remove('section-hidden');
 }
 
-function showPreviousSection() {
-    if (lastSectionId) {
-        showSection(lastSectionId);
-    }
-}
-// Liste des services avec leurs données
+// =======================
+// DONNÉES DES SERVICES
+// =======================
+
 const services = {
   fap: {
     titre: "Filtre à Particules (FAP)",
@@ -273,59 +245,38 @@ const services = {
     description: "Lecture et suppression des codes erreurs du véhicule.",
     symptomes: ["Voyants affichés", "Messages OBD persistants"],
     categorie: "Codes & Défauts"
-  },
-  RDV: {
-    titre: "",
-    description: "",
-    symptomes: ["", ""],
-    categorie: ""
   }
 };
 
-
-// Affiche la section RDV avec les bonnes infos
 function showRDV(serviceKey) {
   const data = services[serviceKey];
   if (!data) return;
 
-  window.isServiceRedirect = true;
-  showSection('rendezvous');
+  const current = document.querySelector('section:not(.section-hidden)');
+  if (current) sectionHistory.push(current.id); // ajoute section actuelle
 
-  // Affiche la fiche du service
+  sectionHistory.push(data.categorie.toLowerCase()); // ajoute le groupe (ex: reparations)
+
+  showSection('rendezvous');
   document.querySelector('#rdv-titre').textContent = `🔧 ${data.titre}`;
   document.querySelector('#description-service').textContent = data.description;
   document.querySelector('#symptomes-service').innerHTML = data.symptomes.map(s => `<li>${s}</li>`).join('');
-
-  // Masque le formulaire pour l'instant
   document.getElementById('rdv-intro').style.display = 'block';
   document.getElementById('formulaire-rdv').style.display = 'none';
-
-  // Prépare les champs du formulaire
   document.getElementById('select-service').value = data.categorie;
   document.querySelector('textarea[name="message"]').value =
     `🔧 Service : ${data.titre}\n📋 Description : ${data.description}\n❗ Symptômes :\n- ${data.symptomes.join('\n- ')}`;
 }
+
+
+
+
 function afficherFormulaireRDV() {
   document.getElementById('rdv-intro').style.display = 'none';
   document.getElementById('formulaire-rdv').style.display = 'flex';
 }
 
-
-
-
-//FIREBASE
-
-// Écrire des données
-database.ref('rendezvous/').push({
-  client: "John Doe",
-  tel: "06 00 00 00 00",
-  date: "05-06-2025",
-  heure: "17:30",
-  service: 0,
-  message: `🔧 Service : Vanne EGR
-📋 Description : La vanne EGR réduit les émissions de NOx en recyclant les gaz.
-❗ Symptômes :
-- Ralenti instable
-- Odeur de gaz
-- Moteur bruyant`
-});
+function toggleMenu() {
+  const menu = document.querySelector("nav ul");
+  menu.classList.toggle("show");
+}
