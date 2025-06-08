@@ -292,3 +292,12 @@ function toggleMenu() {
   const menu = document.querySelector("nav ul");
   menu.classList.toggle("show");
 }
+
+window.showSection = showSection;
+window.showPreviousSection = showPreviousSection;
+window.openAccordion = openAccordion;
+window.showDetails = showDetails;
+window.showRDV = showRDV;
+window.envoyerRDV = envoyerRDV;
+window.afficherFormulaireRDV = afficherFormulaireRDV;
+window.toggleMenu = toggleMenu;
