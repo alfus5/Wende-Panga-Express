@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js"; // <--- Import getAnalytics here!
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,7 +28,7 @@ const database = getDatabase(app); // Initialiser la base de données
 // Écrire des données en utilisant la syntaxe modulaire
 // 1. Get a reference to the 'rendezvous/' path
 const rendezvousRef = ref(database, 'rendezvous/');
-
+/*
 // You can also use the push function directly like this:
 push(rendezvousRef, {
   client: "John Doe",
@@ -48,7 +48,7 @@ push(rendezvousRef, {
 })
 .catch((error) => {
   console.error("Data could not be saved.", error);
-});
+});*/
 
 // Just a note: In the modular SDK, you generally use the imported functions directly
 // like `push(rendezvousRef, { ... })` instead of `database.ref(...).push(...)`.
@@ -118,6 +118,44 @@ function envoyerRDV(event) {
     showSection('accueil');
   }, 3000);
 }
+
+function sendRDV(event) {
+  event.preventDefault(); // Empêche le rechargement du formulaire
+
+  // Récupération des données du formulaire
+  const nom = document.getElementById('name').value;
+  const telephone = document.getElementById('phone').value;
+  const date = document.getElementById('date').value;
+  const service = document.getElementById('select-service').value;
+  const message = document.getElementById('message').value;
+
+  const rdvData = {
+    nom: nom,
+    telephone: telephone,
+    date: date,
+    service: service,
+    message: message
+  };
+
+  // 🔥 Envoi dans Firebase Realtime Database
+  const db = getDatabase();
+  const rdvRef = ref(db, 'rendezvous');
+  const newRdvRef = push(rdvRef); // génère un ID unique
+  set(newRdvRef, rdvData)
+    .then(() => {
+      alert("Rendez-vous envoyé avec succès !");
+      // Vider le formulaire
+      document.getElementById('formulaire-rdv').reset();
+    })
+    .catch((error) => {
+      console.error("Erreur lors de l'envoi du rendez-vous :", error);
+      alert("Erreur lors de l'envoi du rendez-vous.");
+    });
+
+  // 🍪 Sauvegarde dans un cookie (sous forme JSON)
+  document.cookie = "rdvData=" + encodeURIComponent(JSON.stringify(rdvData)) + "; path=/; max-age=2592000"; // 30 jours
+}
+
 
 function applyCarouselEffect() {
   const carousel = document.querySelector('#accueil .carousel-centered');
