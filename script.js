@@ -54,8 +54,6 @@ push(rendezvousRef, {
 
 
 
-
-
 //Fonctions site
 
 
