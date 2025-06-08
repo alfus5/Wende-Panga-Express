@@ -1,6 +1,10 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
 import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+// NOTE: You are trying to use getAnalytics but it's not imported.
+// If you want to use Analytics, you'll need to import it:
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -13,17 +17,24 @@ const firebaseConfig = {
   storageBucket: "wende-panga-express.firebasestorage.app",
   messagingSenderId: "661266039149",
   appId: "1:661266039149:web:a6b82733096ed5217a9a64",
-  measurementId: "G-0JKLWTYV81"
+  measurementId: "G-0JKLWTYV81" // Optional, if you use Analytics
 };
 
 // Initialiser Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// NOTE: If you don't import getAnalytics and call it, this line will cause an error.
+// If you don't need Analytics for this part, you can remove these two lines.
+// const analytics = getAnalytics(app);
+
 const database = getDatabase(app); // Initialiser la base de données
 
+// Écrire des données en utilisant la syntaxe modulaire
+// 1. Get a reference to the 'rendezvous/' path
+const rendezvousRef = ref(database, 'rendezvous/');
 
-// Écrire des données
-database.ref('rendezvous/').push({
+// 2. Push the data to this reference. push() automatically creates a unique key.
+push(rendezvousRef, {
   client: "John Doe",
   tel: "06 00 00 00 00",
   date: "05-06-2025",
@@ -35,7 +46,16 @@ database.ref('rendezvous/').push({
 - Ralenti instable
 - Odeur de gaz
 - Moteur bruyant`
+})
+.then(() => {
+  // Data saved successfully!
+  console.log("Rendezvous data pushed successfully!");
+})
+.catch((error) => {
+  // The write failed...
+  console.error("Error pushing rendezvous data:", error);
 });
+
 
 
 
