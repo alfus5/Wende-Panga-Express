@@ -332,6 +332,9 @@ function toggleMenu() {
   menu.classList.toggle("show");
 }
 
+
+//foncitions codées
+
 window.showSection = showSection;
 window.showPreviousSection = showPreviousSection;
 window.openAccordion = openAccordion;
