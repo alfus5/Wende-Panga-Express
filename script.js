@@ -72,6 +72,15 @@ function showPreviousSection() {
 /* ----- Confirmation simple « RDV envoyé » ---- */
 function envoyerRDV(event) {
   event.preventDefault();
+
+  // Vider le formulaire après envoi
+  document.getElementById('name').value = "";
+  document.getElementById('phone').value = "";
+  document.getElementById('date').value = "";
+  document.getElementById('time').value = "";
+  document.getElementById('select-service').value = "";
+  document.getElementById('message').value = "";
+
   const conf = document.getElementById('confirmation');
   conf.classList.add('show-confirm');
   setTimeout(() => {
@@ -183,7 +192,10 @@ function showRDV(serviceKey) {
   document.getElementById('formulaire-rdv').style.display = 'none';
   document.getElementById('select-service').value = data.categorie;
   document.querySelector('textarea[name="message"]').value =
-    `🔧 Service : ${data.titre}\n📋 Description : ${data.description}\n❗ Symptômes :\n- ${data.symptomes.join('\n- ')}`;
+    `🔧 Service : ${data.titre}
+📋 Description : ${data.description}
+❗ Symptômes :
+- ${data.symptomes.join('\n- ')}`;
 }
 
 function afficherFormulaireRDV() {
